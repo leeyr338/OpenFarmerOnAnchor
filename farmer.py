@@ -96,7 +96,7 @@ class Farmer:
         self.url_assets = user_param.assets_domain + '/atomicassets/v1/assets'
         self.http = requests.Session()
         self.http.trust_env = False
-        self.http.request = functools.partial(self.http.request, timeout=30)
+        self.http.request = functools.partial(self.http.request, timeout=120)
         if self.proxy:
             self.http.proxies = {
                 "http": "http://{0}".format(self.proxy),
@@ -1412,8 +1412,7 @@ class Farmer:
                     self.close()
                     self.log.info("程序已停止，请检查日志后手动重启程序")
                     return 1
-            time.sleep(1)
-
+            time.sleep(30)
 
 def test():
     pass

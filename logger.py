@@ -10,11 +10,11 @@ log = logging.LoggerAdapter(_log, {"tag": "global"})
 
 
 def init_loger(loger_name: str):
-    handler = logging.StreamHandler(sys.stdout)
+    # handler = logging.StreamHandler(sys.stdout)
     #logging_format = logging.Formatter("[%(asctime)s][%(levelname)s][%(process)d][%(tag)s]: %(message)s")
     logging_format = logging.Formatter("[%(asctime)s][%(tag)s]: %(message)s","%Y-%m-%d %H:%M:%S")
-    handler.setFormatter(logging_format)
-    logging.getLogger().addHandler(handler)
+    # handler.setFormatter(logging_format)
+    # logging.getLogger().addHandler(handler)
     if not os.path.exists(cfg.path_logs):
         os.makedirs(cfg.path_logs)
     log_file_name = "{0}.log".format(loger_name)
