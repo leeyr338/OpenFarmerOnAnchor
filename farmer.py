@@ -1273,7 +1273,7 @@ class Farmer:
         withdraw_fee = config["fee"]
         self.log.info(f"提现费率：{withdraw_fee}% ")
 
-        if withdraw_fee == 5:
+        if withdraw_fee < 9:
             if r.wood > user_param.need_fww:
                 withdraw_wood = r.wood - user_param.need_fww
             if r.gold > user_param.need_fwg:
