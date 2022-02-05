@@ -1357,7 +1357,7 @@ class Farmer:
                 self.next_operate_time = min([item.next_availability for item in self.not_operational])
                 self.log.info("下一次可操作时间: {0}".format(utils.show_time(self.next_operate_time)))
                 # 可操作时间到了，也要延后5秒再扫，以免
-                self.next_operate_time += timedelta(seconds=5)
+                self.next_operate_time += timedelta(seconds=240)
             else:
                 self.next_operate_time = datetime.max
             if self.count_success_claim > 0 or self.count_error_claim > 0:

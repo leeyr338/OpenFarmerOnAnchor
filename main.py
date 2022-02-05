@@ -5,6 +5,8 @@ from logger import log
 import yaml
 import sys
 import utils
+import random
+import time 
 from settings import load_user_param, user_param
 
 def run(config_file: str):
@@ -28,6 +30,8 @@ def run(config_file: str):
 
 def main():
     try:
+        start_sleep_time = random.randint(0, 240)
+        time.sleep(start_sleep_time)
         user_yml = "user.yml"
         if len(sys.argv) == 2:
             user_yml = sys.argv[1]
