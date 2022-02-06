@@ -1291,6 +1291,10 @@ class Farmer:
         return True
 
     def scan_resource(self):
+        self.token = self.get_fw_balance()
+        self.log.info(f"FWG【{self.token.fwg}】 FWW【{self.token.fww}】 FWF【{self.token.fwf}】")
+        time.sleep(cfg.req_interval)
+
         r = self.get_resource()
         self.log.info(f"金币【{r.gold}】 木头【{r.wood}】 食物【{r.food}】 能量【{r.energy}/{r.max_energy}】")
         self.resoure = r
@@ -1301,9 +1305,9 @@ class Farmer:
             self.recover_energy(recover)
             self.resoure.energy += recover
 
-        time.sleep(cfg.req_interval)
-        self.token = self.get_fw_balance()
-        self.log.info(f"FWG【{self.token.fwg}】 FWW【{self.token.fww}】 FWF【{self.token.fwf}】")
+        # time.sleep(cfg.req_interval)
+        # self.token = self.get_fw_balance()
+        # self.log.info(f"FWG【{self.token.fwg}】 FWW【{self.token.fww}】 FWF【{self.token.fwf}】")
 
     def reset_before_scan(self):
         self.not_operational.clear()
