@@ -70,6 +70,9 @@ class user_param:
     fwg_min: int = 0
     deposit_fwg: int = 0
 
+    auto_collection: bool = False
+    collection_account: str = ""
+
     min_durability: int = 0
 
     # 自动买食物
@@ -124,6 +127,8 @@ class user_param:
             "deposit_fwf": user_param.deposit_fwf,
             "fwg_min": user_param.fwg_min,
             "deposit_fwg": user_param.deposit_fwg,
+            "auto_collection": user_param.auto_collection,
+            "collection_account": user_param.collection_account,
             "min_durability": user_param.min_durability,
 
             "buy_food": user_param.buy_food,
@@ -177,6 +182,9 @@ def load_user_param(user: dict):
     user_param.deposit_fwf = user.get("deposit_fwf", 0)
     user_param.fwg_min = user.get("fwg_min", 0)
     user_param.deposit_fwg = user.get("deposit_fwg", 0)
+
+    user_param.auto_collection = user.get("auto_collection", False)
+    user_param.collection_account = user.get("collection_account", "")
 
     user_param.buy_food = user.get("buy_food", False)
     user_param.buy_food_num = user.get("buy_food_num", 0)

@@ -1116,6 +1116,44 @@ class Farmer:
         self.wax_transact(transaction)
         self.log.info("提现完成")
 
+   # 资金归集
+    def scan_collection(self):
+        # 当前仅归集 FWG
+        if self.token.fwg > 0:
+            self.do_collection(self.token.fwg)
+        else:
+            self.log.info("没有需要归集的 FWG")
+
+        return True
+
+    # 将 Token 归集到一个账号
+    def do_collection(self, fwg):
+        self.log.info("正在归集资金")
+        # format(1.23456, '.4f')
+        fwg = format(fwg, '.4f')
+        quantity = fwg + " FWG"
+
+        # 格式：1.0000 FWG
+        transaction = {
+            "actions": [{
+                "account": "farmerstoken",
+                "name": "transfer",
+                "authorization": [{
+                    "actor": self.wax_account,
+                    "permission": "active",
+                }],
+                "data": {
+                    "from": self.wax_account,
+                    "to" : user_param.collection_account,
+                    "quantity": quantity,
+                    "memo": "collection",
+                },
+            }],
+        }
+
+        self.wax_transact(transaction)
+        self.log.info(f"发送: {quantity} 到 {user_param.collection_account} 完成")
+
     # 修理工具
     def repair_tool(self, tool: Tool):
         self.log.info(f"正在修理工具: {tool.show()}")
@@ -1290,7 +1328,7 @@ class Farmer:
 
         return True
 
-    def scan_resource(self):
+    def reload_resource(self):
         self.token = self.get_fw_balance()
         self.log.info(f"FWG【{self.token.fwg}】 FWW【{self.token.fww}】 FWF【{self.token.fwf}】")
         time.sleep(cfg.req_interval)
@@ -1298,6 +1336,8 @@ class Farmer:
         r = self.get_resource()
         self.log.info(f"金币【{r.gold}】 木头【{r.wood}】 食物【{r.food}】 能量【{r.energy}/{r.max_energy}】")
         self.resoure = r
+
+    def scan_resource(self):
         if self.resoure.energy < user_param.min_energy:
             self.log.info("能量小于配置的最小能量，开启能量补充{0}".format(self.resoure.max_energy))
             recover = min(user_param.recover_energy, self.resoure.max_energy) - self.resoure.energy
@@ -1320,6 +1360,21 @@ class Farmer:
         try:
             self.reset_before_scan()
             self.log.info("开始一轮扫描")
+            self.reload_resource()
+
+            # Withdraw and collection first.
+            if user_param.withdraw:
+                self.scan_withdraw()
+                time.sleep(cfg.req_interval)
+
+            # Reload resource after withdraw.
+            self.reload_resource()
+            if user_param.auto_collection:
+                self.scan_collection()
+                time.sleep(cfg.req_interval)
+
+            # Reload resource after collection.
+            self.reload_resource()
             self.scan_resource()
             time.sleep(cfg.req_interval)
 
@@ -1339,9 +1394,6 @@ class Farmer:
             # 繁殖喂养
             if user_param.breeding:
                 self.scan_breedings()
-                time.sleep(cfg.req_interval)
-            if user_param.withdraw:
-                self.scan_withdraw()
                 time.sleep(cfg.req_interval)
             if user_param.auto_deposit:
                 self.scan_deposit()
