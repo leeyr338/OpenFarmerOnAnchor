@@ -26,7 +26,7 @@ def push_transaction(params_json):
     # final transaction formed
     trx = {"actions": [payload]}
     trx['expiration'] = str(
-        (dt.datetime.utcnow() + dt.timedelta(seconds=60)).replace(tzinfo=pytz.UTC))
+        (dt.datetime.utcnow() + dt.timedelta(seconds=180)).replace(tzinfo=pytz.UTC))
     # use a string or EOSKey for push_transaction
     # key = "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"
     # use EOSKey:
