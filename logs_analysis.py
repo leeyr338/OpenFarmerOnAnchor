@@ -22,7 +22,6 @@ def run(logs_folder: str):
                      
                      # 是否已经存账号记录，如果存在，则直接增加转账记录
                      if account in transaction_datas:
-                        print(f"key {account} has been record.")
                         transaction_datas[account].update({date_time:value})
                      else:
                         transaction_datas.update({account:{date_time:value}})
@@ -42,6 +41,7 @@ def run(logs_folder: str):
             transaction_file.write(f"   - {date} : {transaction_datas[key][date]}\n")
             print(f"   - {date} : {transaction_datas[key][date]}")
         transaction_file.write("\n")
+        print("\n")
     transaction_file.close()
 
 def main():
