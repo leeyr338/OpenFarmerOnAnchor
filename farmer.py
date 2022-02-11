@@ -1044,6 +1044,7 @@ class Farmer:
             self.log.info("无需充值")
         else:
             self.do_deposit(deposit_food, deposit_gold, deposit_wood)
+            self.reload_resource()
             self.log.info(f"充值：金币【{deposit_gold}】 木头【{deposit_wood}】 食物【{deposit_food}】 ")
 
         return True
@@ -1121,6 +1122,7 @@ class Farmer:
         # 当前仅归集 FWG
         if self.token.fwg > 0:
             self.do_collection(self.token.fwg)
+            self.reload_resource()
         else:
             self.log.info("没有需要归集的 FWG")
 
@@ -1311,7 +1313,7 @@ class Farmer:
         withdraw_fee = config["fee"]
         self.log.info(f"提现费率：{withdraw_fee}% ")
 
-        if withdraw_fee < 9:
+        if withdraw_fee == 5:
             if r.wood > user_param.need_fww:
                 withdraw_wood = r.wood - user_param.need_fww
             if r.gold > user_param.need_fwg:
@@ -1322,6 +1324,7 @@ class Farmer:
                 self.log.info("提现数量太少了，下次再提")
                 return True
             self.do_withdraw(withdraw_food, withdraw_gold, withdraw_wood, withdraw_fee)
+            self.reload_resource()
             self.log.info(f"提现：金币【{withdraw_gold}】 木头【{withdraw_wood}】 食物【{withdraw_food}】 费率【{withdraw_fee}】")
         else:
             self.log.info("不满足提现条件")
@@ -1367,14 +1370,10 @@ class Farmer:
                 self.scan_withdraw()
                 time.sleep(cfg.req_interval)
 
-            # Reload resource after withdraw.
-            self.reload_resource()
             if user_param.auto_collection:
                 self.scan_collection()
                 time.sleep(cfg.req_interval)
 
-            # Reload resource after collection.
-            self.reload_resource()
             self.scan_resource()
             time.sleep(cfg.req_interval)
 
