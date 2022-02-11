@@ -34,12 +34,12 @@ def run(logs_folder: str):
         for date in transaction_datas[key].keys():
             value += float(transaction_datas[key][date])
 
-        transaction_file.write(f"{key} : {value}\n")
+        transaction_file.write(f"{key} : {value}")
         print(f"{key} : {value}")
 
         for date in transaction_datas[key].keys():
-            transaction_file.write(f"   - {date} : {transaction_datas[key][date]}\n")
-            print(f"   - {date} : {transaction_datas[key][date]}")
+            # transaction_file.write(f"   {date} : {transaction_datas[key][date]}")
+            print(f"    {date} : {transaction_datas[key][date]}")
         transaction_file.write("\n")
         print("\n")
     transaction_file.close()
