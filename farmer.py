@@ -1323,7 +1323,7 @@ class Farmer:
             if withdraw_food + withdraw_gold + withdraw_wood < user_param.withdraw_min:
                 self.log.info("提现数量太少了，下次再提")
                 return True
-            self.do_withdraw(withdraw_food, withdraw_gold, withdraw_wood, withdraw_fee)
+            self.do_withdraw(0, withdraw_gold, 0, withdraw_fee)
             self.reload_resource()
             self.log.info(f"提现：金币【{withdraw_gold}】 木头【{withdraw_wood}】 食物【{withdraw_food}】 费率【{withdraw_fee}】")
         else:
